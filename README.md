@@ -1,4 +1,4 @@
-# Proof-of-COncept - Automating Configuration of Dell Enterprise SONiC with CI/CD Pipelines
+# Proof-of-Concept - Automating Configuration of Dell Enterprise SONiC with CI/CD Pipelines
 
 
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)](#-how-to-contribute)
