@@ -1,0 +1,17 @@
+lab-fabric1-SPINE-1 ansible_host=192.168.1.122
+lab-fabric1-SPINE-2 ansible_host=192.168.1.121
+lab-fabric1-LEAF-1 ansible_host=192.168.1.125
+lab-fabric1-LEAF-2 ansible_host=192.168.1.126
+
+[spine]
+lab-fabric1-SPINE-1
+lab-fabric1-SPINE-2
+
+[leaf]
+lab-fabric1-LEAF-1
+lab-fabric1-LEAF-2
+
+[lab-fabric1:children]
+spine
+leaf
+

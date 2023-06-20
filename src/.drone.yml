@@ -1,0 +1,9 @@
+---
+kind: pipeline
+type: exec
+name: default
+
+steps:
+- name: Ansible - Create or update VXLAN / EVPN fabric
+  commands:
+  - ansible-playbook -i inventory/hosts.yaml sonic_api_calls.yaml

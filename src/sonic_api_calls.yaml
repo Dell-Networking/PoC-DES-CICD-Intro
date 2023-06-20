@@ -1,0 +1,54 @@
+---
+
+- name: SONiC Management Framework REST API examples
+  hosts: leaves
+  gather_facts: no
+  connection: httpapi
+  tasks:
+    - name: Add a VLAN network instance for Vlan11
+      dellemc.enterprise_sonic.sonic_api:
+        url: data/openconfig-network-instance:network-instances/network-instance=Vlan11
+        method: "PUT"
+        body: {"openconfig-network-instance:network-instance": [{"name": "Vlan11","config": {"name": "Vlan11"}}]}
+        status_code: 204
+    - name: Get specific VLAN network instance
+      dellemc.enterprise_sonic.sonic_api:
+        url: data/openconfig-network-instance:network-instances/network-instance=Vlan11
+        method: "GET"
+        status_code: 200
+      register: api_op_vlan
+    - name: Perform PUT operation to create VXLAN Tunnel Map
+      dellemc.enterprise_sonic.sonic_api:
+        url: data/sonic-vxlan:sonic-vxlan/VXLAN_TUNNEL_MAP
+        method: "POST"
+        body: {"sonic-vxlan:VXLAN_TUNNEL_MAP_LIST": [{"mapname": "map_101_Vlan11", "name": "vtep1", "vlan": "Vlan11", "vni": 101 }]}
+        status_code: 204
+    - name: Get VXLAN Tunnel Maps
+      dellemc.enterprise_sonic.sonic_api:
+        url: data/sonic-vxlan:sonic-vxlan/VXLAN_TUNNEL_MAP
+        method: "GET"
+        status_code: 200
+      register: api_op_vxlan_tunnel_map
+    - name: Create VRF for Tenant1
+      dellemc.enterprise_sonic.sonic_api:
+        url: data/sonic-vrf:sonic-vrf
+        method: "POST"
+        body: {"sonic-vrf:VRF": {"VRF_LIST": [{"vrf_name": "Vrf_Tenant1", "fallback": true}]}}
+        status_code: 204
+    - name: Associate VNI to VRF
+      dellemc.enterprise_sonic.sonic_api:
+        url: data/sonic-vrf:sonic-vrf
+        method: "PATCH"
+        body: {"sonic-vrf:sonic-vrf": {"VRF": {"VRF_LIST": [{"vrf_name": "Vrf_Tenant1", "fallback": true, "vni": 101}]}}}
+        status_code: 204
+    - name: Get all VRFs
+      dellemc.enterprise_sonic.sonic_api:
+        url: data/sonic-vrf:sonic-vrf
+        method: "GET"
+        status_code: 200
+
+
+
+
+
+

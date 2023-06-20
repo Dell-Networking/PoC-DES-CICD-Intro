@@ -1,0 +1,65 @@
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false
+ansible_network_os: dellemc.enterprise_sonic.sonic
+ansible_user: 'admin'
+ansible_password: 'admin123'
+bgp_asn: '{{ host_data[inventory_hostname].bgp_asn }}'
+bgp_router_id: '{{ host_data[inventory_hostname].bgp_router_id }}'
+host_data:
+  lab-fabric1-LEAF-1:
+    bgp_asn: 64625
+    bgp_router_id: 10.0.2.1
+    ipdhcp_loopback_ip: 192.168.0.1/32
+    loopback0_ip: 10.0.2.1/32
+    loopback1_ip: 1.0.1.1/32
+    mclag_peer_ip: 10.0.2.2
+    mgmt_gateway_ip: 192.168.1.99
+    mgmt_ip: 192.168.1.125/24
+    vtep_name: vtep1
+  lab-fabric1-LEAF-2:
+    bgp_asn: 64625
+    bgp_router_id: 10.0.2.2
+    ipdhcp_loopback_ip: 192.168.0.2/32
+    loopback0_ip: 10.0.2.2/32
+    loopback1_ip: 1.0.1.1/32
+    mclag_peer_ip: 10.0.2.1
+    mgmt_gateway_ip: 192.168.1.99
+    mgmt_ip: 192.168.1.126/24
+    vtep_name: vtep1
+  lab-fabric1-SPINE-1:
+    bgp_asn: 64600
+    bgp_router_id: 10.0.1.1
+    loopback0_ip: 10.0.1.1/32
+    mgmt_gateway_ip: 192.168.1.99
+    mgmt_ip: 192.168.1.122/24
+  lab-fabric1-SPINE-2:
+    bgp_asn: 64600
+    bgp_router_id: 10.0.1.2
+    loopback0_ip: 10.0.1.2/32
+    mgmt_gateway_ip: 192.168.1.99
+    mgmt_ip: 192.168.1.121/24
+loopback0_ip: '{{ host_data[inventory_hostname].loopback0_ip }}'
+loopback_inf0: Loopback0
+loopback_inf1: Loopback1
+mgmt_gateway_ip: '{{ host_data[inventory_hostname].mgmt_gateway_ip }}'
+mgmt_ip: '{{ host_data[inventory_hostname].mgmt_ip }}'
+sonic_bgp_fabriclink_neighbors_aflist:
+  - activate: true
+    afi: ipv4
+    allowas_in:
+      value: 2
+    safi: unicast
+  - activate: true
+    afi: l2vpn
+    safi: evpn
+sonic_bgp_spineleaf_peergroup:
+  advertisement_interval: 5
+  capability:
+    extended_nexthop: true
+  name: spine-leaf
+  remote_as:
+    peer_type: external
+  timers:
+    holdtime: 9
+    keepalive: 3
+vlan_info: {}
